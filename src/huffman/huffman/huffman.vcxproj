@@ -199,14 +199,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="catch.hpp" />
+    <ClInclude Include="data\frequency-table.h" />
     <ClInclude Include="easylogging++.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
     <ClCompile Include="easylogging++.cc" />
     <ClCompile Include="logging.cpp" />
     <ClCompile Include="tests\example-tests.cpp" />
+    <ClCompile Include="tests\frequency-table-tests.cpp" />
     <ClCompile Include="tests\tests.cpp" />
+    <ClCompile Include="tests\type-selection-tests.cpp" />
+    <ClCompile Include="tests\util-tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
