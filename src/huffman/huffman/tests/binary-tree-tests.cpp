@@ -1,9 +1,8 @@
 #ifdef TEST_BUILD
 
 #include "catch.hpp"
-#include "data/binary-tree.h"
 
-#include <iostream>
+#include "data/binary-tree.h"
 
 
 TEST_CASE("Branch & Leaf tests") {

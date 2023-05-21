@@ -4,19 +4,16 @@
 #include "util.h"
 
 
-namespace io
-{
-    struct InputStream
-    {
-        virtual ~InputStream()           { }
+namespace io {
+    struct InputStream {
+        virtual ~InputStream() { }
 
-        virtual Datum read()              = 0;
-        virtual bool  end_reached() const = 0;
+        virtual Datum read() = 0;
+        virtual bool end_reached() const = 0;
     };
 
-    struct OutputStream
-    {
-        virtual ~OutputStream()         { }
+    struct OutputStream {
+        virtual ~OutputStream() { }
 
         virtual void write(Datum value) = 0;
     };
