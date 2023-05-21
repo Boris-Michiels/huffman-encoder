@@ -199,6 +199,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="catch.hpp" />
+    <ClInclude Include="data\binary-tree.h" />
     <ClInclude Include="data\frequency-table.h" />
     <ClInclude Include="easylogging++.h" />
     <ClInclude Include="util.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="app.cpp" />
     <ClCompile Include="easylogging++.cc" />
     <ClCompile Include="logging.cpp" />
+    <ClCompile Include="tests\binary-tree-tests.cpp" />
     <ClCompile Include="tests\example-tests.cpp" />
     <ClCompile Include="tests\frequency-table-tests.cpp" />
     <ClCompile Include="tests\tests.cpp" />

@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-TEST_CASE("FrequencyTable testing") {
+TEST_CASE("FrequencyTable tests") {
     // Create new frequency table to count chars
     data::FrequencyTable<char> freqtable;
 
@@ -25,6 +25,10 @@ TEST_CASE("FrequencyTable testing") {
     // Ask for list of values
     std::vector<char> letters = freqtable.values(); // -> { 'a', 'b' }
     REQUIRE(letters == std::vector<char>({ 'a', 'b' }));
+
+    data::FrequencyTable<char> count_test = data::count_frequencies(std::vector<char>({ 'a', 'b', 'a', 'c', 'b'}));
+    REQUIRE(count_test['a'] == 2);
+    REQUIRE(count_test.values() == std::vector<char>({ 'a', 'b', 'c'}));
 }
 
 #endif

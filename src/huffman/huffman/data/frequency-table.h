@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 
+
 namespace data {
 	template<typename T>
 	class FrequencyTable {
@@ -16,6 +17,7 @@ namespace data {
 
 		const std::vector<T> values() const {
 			std::vector<T> values;
+			values.reserve(frequencies.size());
 
 			for (const auto& pair : frequencies) {
 				values.push_back(pair.first);
@@ -30,10 +32,10 @@ namespace data {
 	};
 
 	template<typename T>
-	FrequencyTable<T> count_frequencies(const std::vector<T> values) {
+	FrequencyTable<T> count_frequencies(const std::vector<T>& values) {
 		FrequencyTable<T> frequencies;
 
-		for (const T x : values) {
+		for (const T& x : values) {
 			frequencies.increment(x);
 		}
 

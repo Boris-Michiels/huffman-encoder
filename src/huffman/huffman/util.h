@@ -3,9 +3,9 @@
 
 #include <cstdint>
 
+
 typedef uint64_t u64;
 typedef uint64_t Datum;
-
 
 constexpr unsigned bits_needed(u64 domain_size) {
 	unsigned result = 0;
