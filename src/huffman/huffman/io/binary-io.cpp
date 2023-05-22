@@ -13,7 +13,7 @@ u64 io::read_bits(unsigned nbits, io::InputStream& input) {
 	return result;
 }
 
-// Waarom falen de tests die meer dan 8 bits nodig hebben als de "& 1" er niet staat?
+// Waarom falen de tests die meer dan 8 bits nodig hebben als de bitwise AND "& 1" er niet staat?
 void io::write_bits(u64 value, unsigned nbits, io::OutputStream& output) {
 	while (nbits-- != 0) {
 		output.write((value >> nbits) & 1);

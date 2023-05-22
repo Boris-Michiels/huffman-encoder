@@ -39,6 +39,15 @@
     <ClInclude Include="io\memory-buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="encoding\encoding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\data-endpoints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="easylogging++.cc">
@@ -72,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\binary-io-tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="io\files.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
