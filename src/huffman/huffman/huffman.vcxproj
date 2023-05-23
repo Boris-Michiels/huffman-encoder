@@ -203,6 +203,7 @@
     <ClInclude Include="data\frequency-table.h" />
     <ClInclude Include="easylogging++.h" />
     <ClInclude Include="encoding\bit-grouper.h" />
+    <ClInclude Include="encoding\encoding-combiner.h" />
     <ClInclude Include="encoding\encoding.h" />
     <ClInclude Include="encoding\eof-encoding.h" />
     <ClInclude Include="io\binary-io.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="tests\binary-io-tests.cpp" />
     <ClCompile Include="tests\binary-tree-tests.cpp" />
     <ClCompile Include="tests\bit-grouper-tests.cpp" />
+    <ClCompile Include="tests\encoding-combiner-tests.cpp" />
     <ClCompile Include="tests\eof-encoding-tests.cpp" />
     <ClCompile Include="tests\example-tests.cpp" />
     <ClCompile Include="tests\frequency-table-tests.cpp" />

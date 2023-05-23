@@ -9,6 +9,7 @@
 
 TEST_CASE("Bit Grouper tests") {
     io::MemoryBuffer<2> buffer2;
+    // Waarom is worden de Data geinterpreteerd als letters als de group_size groter is dan 4?
     io::MemoryBuffer<16> buffer16;
 
     buffer2.data()->push_back(1);

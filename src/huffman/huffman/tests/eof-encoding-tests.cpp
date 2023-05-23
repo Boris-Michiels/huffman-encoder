@@ -21,8 +21,11 @@ TEST_CASE("EOF tests") {
     REQUIRE((buffer17.data()->size() == 3 && buffer18.data()->size() == 4));
     REQUIRE((*buffer18.data())[3] == 17);
 
-    /*io::MemoryBuffer<17> empty;
-    encoding::encode(buffer18.source(), eof_encoding, empty.destination());*/
+    io::MemoryBuffer<17> empty;
+    encoding::decode(buffer18.source(), eof_encoding, empty.destination());
+
+    REQUIRE(buffer17.data()->front() == empty.data()->front());
+    REQUIRE(*buffer17.data() == *empty.data());
 }
 
 #endif

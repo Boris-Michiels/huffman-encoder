@@ -5,10 +5,10 @@
 
 namespace {
 	class BitGrouperImplementation : public encoding::EncodingImplementation {
-		u64 _group_size;
+		unsigned _group_size;
 
 	public:
-		BitGrouperImplementation(u64 group_size) : _group_size(group_size) {}
+		BitGrouperImplementation(unsigned group_size) : _group_size(group_size) {}
 
 		void encode(io::InputStream& input_stream, io::OutputStream& output_stream) const override {
 			while (!input_stream.end_reached()) output_stream.write(io::read_bits(_group_size, input_stream));
