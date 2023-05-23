@@ -36,7 +36,7 @@ namespace encoding {
 	}
 
 	template<u64 IN, u64 OUT>
-	void decode(io::DataSource<IN> data_source, const Encoding<IN, OUT> encoding, io::DataDestination<OUT> data_destination) {
+	void decode(io::DataSource<IN> data_source, const Encoding<OUT, IN> encoding, io::DataDestination<OUT> data_destination) {
 		auto input_stream_ptr = data_source->create_input_stream();
 		auto output_stream_ptr = data_destination->create_output_stream();
 
