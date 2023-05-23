@@ -1,4 +1,4 @@
-#include "binary-io.h"
+#include "io/binary-io.h"
 #include <iostream>
 
 
@@ -7,7 +7,7 @@ u64 io::read_bits(unsigned nbits, io::InputStream& input) {
 
 	while (nbits-- != 0) {
 		result <<= 1;
-		result |= input.read();
+		result |= input.end_reached() ? 0 : input.read();
 	}
 
 	return result;

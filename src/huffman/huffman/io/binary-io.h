@@ -2,7 +2,7 @@
 #define BINARY_IO_H
 
 #include "util.h"
-#include "streams.h"
+#include "io/streams.h"
 
 
 namespace io {

@@ -48,6 +48,12 @@
     <ClInclude Include="io\data-endpoints.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="encoding\eof-encoding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="encoding\bit-grouper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="easylogging++.cc">
@@ -84,6 +90,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="io\files.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="encoding\eof-encoding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\eof-encoding-tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="encoding\bit-grouper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\bit-grouper-tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
