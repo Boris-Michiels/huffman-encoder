@@ -10,11 +10,13 @@ namespace data {
 	class Node {
 	public:
 		virtual ~Node() {}
+
+		virtual bool is_leaf() const { return false; }
 	};
 
 	template<typename T>
 	class Branch : public Node<T> {
-		const std::unique_ptr<const Node<T>>  _left_child, _right_child;
+		std::unique_ptr<const Node<T>>  _left_child, _right_child;
 
 	public:
 		Branch(std::unique_ptr<const Node<T>> left_child, std::unique_ptr<const Node<T>> right_child)
@@ -31,20 +33,20 @@ namespace data {
 	public:
 		Leaf(const T& value) : _value(value) {}
 
-		const T& value() const {
-			return _value;
-		}
+		const T& value() const { return _value; }
+		bool is_leaf() const override { return true; }
 	};
 
 	template<typename IN, typename OUT>
-	std::unique_ptr<Node<OUT>> map(const Node<IN>& tree, std::function<OUT(const IN&)> function) {
-		const auto& node = dynamic_cast<const Leaf<IN>&>(tree);
-
-		if (node) return std::make_unique<Leaf<OUT>>(function(node.value()));
+	std::unique_ptr<Node<OUT>> map(const Node<IN>& root, std::function<OUT(const IN&)> function) {
+		if (root.is_leaf()) {
+			const auto& leaf = dynamic_cast<const Leaf<IN>&>(root);
+			return std::make_unique<Leaf<OUT>>(function(leaf.value()));
+		}
 		else {
-			node = dynamic_cast<Branch<IN>&>(tree);
-			std::unique_ptr<Node<OUT>> new_left_child = map(node.left_child(), function);
-			std::unique_ptr<Node<OUT>> new_right_child = map(node.right_child(), function);
+			const auto& branch = dynamic_cast<const Branch<IN>&>(root);
+			std::unique_ptr<Node<OUT>> new_left_child = map(branch.left_child(), function);
+			std::unique_ptr<Node<OUT>> new_right_child = map(branch.right_child(), function);
 			return std::make_unique<Branch<OUT>>(std::move(new_left_child), std::move(new_right_child));
 		}
 	}
