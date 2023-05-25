@@ -26,6 +26,10 @@ namespace data {
 			return values;
 		}
 
+		const std::map<T, unsigned>& frequency_map() const {
+			return frequencies;
+		}
+
 		const unsigned operator [](const T& x) {
 			return (frequencies.find(x) != frequencies.end()) ? frequencies[x] : 0;
 		}
