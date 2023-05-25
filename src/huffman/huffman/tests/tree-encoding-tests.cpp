@@ -21,7 +21,7 @@ TEST_CASE("Tree Encoding tests") {
     const data::Branch<Datum>* decoded = dynamic_cast<const data::Branch<Datum>*>(root2.get());
     REQUIRE(!decoded->is_leaf());
     auto leaf_12 = dynamic_cast<const data::Leaf<Datum>*>(&decoded->left_child());
-    REQUIRE(leaf_12->value() == 01);
+    REQUIRE(leaf_12->value() == 1);
 }
 
 #endif

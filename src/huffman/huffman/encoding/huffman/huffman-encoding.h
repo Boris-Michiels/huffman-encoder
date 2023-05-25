@@ -24,6 +24,14 @@ namespace encoding {
 		Datum decode_single_datum(io::InputStream&, const data::Node<Datum>&);
 		void decode_bits(io::InputStream&, const data::Node<Datum>&, io::OutputStream&);
 	}
+
+	std::shared_ptr<encoding::EncodingImplementation> create_huffman_implementation(unsigned);
+
+	template<u64 N>
+	encoding::Encoding<N, 2> huffman_encoding()
+	{
+		return Encoding<N, 2>(create_huffman_implementation(N));
+	}
 }
 
 #endif

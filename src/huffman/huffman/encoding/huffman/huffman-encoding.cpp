@@ -28,9 +28,14 @@ namespace {
 		void decode(io::InputStream& input_stream, io::OutputStream& output_stream) const override {
 			auto root = encoding::huffman::decode_tree(bits_needed(_domain_size), input_stream);
 
-			
+			encoding::huffman::decode_bits(input_stream, *root, output_stream);
 		}
 	};
+}
+
+std::shared_ptr<encoding::EncodingImplementation> encoding::create_huffman_implementation(unsigned domain_size)
+{
+	return std::make_shared<HuffmanEncodingImplementation>(domain_size);
 }
 
 std::vector<Datum> encoding::huffman::copy_to_vector(io::InputStream& input_stream) {
