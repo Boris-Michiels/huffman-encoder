@@ -4,6 +4,7 @@
 #include "util.h"
 #include "data/binary-tree.h"
 #include "io/streams.h"
+#include "io/binary-io.h"
 
 
 namespace encoding {

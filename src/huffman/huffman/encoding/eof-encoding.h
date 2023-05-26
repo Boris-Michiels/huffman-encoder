@@ -6,7 +6,7 @@
 
 
 namespace encoding {
-	std::shared_ptr<EncodingImplementation> create_eof_implementation(unsigned);
+	std::shared_ptr<EncodingImplementation> create_eof_implementation(u64);
 
 	template<unsigned N>
 	Encoding<N, N + 1> eof_encoding() {

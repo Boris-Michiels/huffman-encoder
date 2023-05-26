@@ -2,6 +2,7 @@
 #define BIT_GROUPER_H
 
 #include "encoding/encoding.h"
+#include "io/binary-io.h"
 
 
 namespace encoding {

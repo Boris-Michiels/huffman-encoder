@@ -25,11 +25,10 @@ namespace encoding {
 		void decode_bits(io::InputStream&, const data::Node<Datum>&, io::OutputStream&);
 	}
 
-	std::shared_ptr<encoding::EncodingImplementation> create_huffman_implementation(unsigned);
+	std::shared_ptr<encoding::EncodingImplementation> create_huffman_implementation(u64);
 
 	template<u64 N>
-	encoding::Encoding<N, 2> huffman_encoding()
-	{
+	encoding::Encoding<N, 2> huffman_encoding() {
 		return Encoding<N, 2>(create_huffman_implementation(N));
 	}
 }

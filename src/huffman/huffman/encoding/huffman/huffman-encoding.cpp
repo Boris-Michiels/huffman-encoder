@@ -3,10 +3,10 @@
 
 namespace {
 	class HuffmanEncodingImplementation : public encoding::EncodingImplementation {
-		unsigned _domain_size;
+		u64 _domain_size;
 
 	public:
-		HuffmanEncodingImplementation(unsigned domain_size) : _domain_size(domain_size) {}
+		HuffmanEncodingImplementation(u64 domain_size) : _domain_size(domain_size) {}
 
 		void encode(io::InputStream& input_stream, io::OutputStream& output_stream) const override {
 			auto data = encoding::huffman::copy_to_vector(input_stream);
@@ -17,24 +17,22 @@ namespace {
 			encoding::huffman::encode_tree(*root, bits_needed(_domain_size), output_stream);
 			
 			for (auto datum : data) {
-				auto bits = codes->at(datum);
+				auto& bits = codes->at(datum);
 
 				for (auto bit : bits) {
-					io::write_bits(bit, 1, output_stream);
+					output_stream.write(bit);
 				}
 			}
 		}
 
 		void decode(io::InputStream& input_stream, io::OutputStream& output_stream) const override {
 			auto root = encoding::huffman::decode_tree(bits_needed(_domain_size), input_stream);
-
 			encoding::huffman::decode_bits(input_stream, *root, output_stream);
 		}
 	};
 }
 
-std::shared_ptr<encoding::EncodingImplementation> encoding::create_huffman_implementation(unsigned domain_size)
-{
+std::shared_ptr<encoding::EncodingImplementation> encoding::create_huffman_implementation(u64 domain_size) {
 	return std::make_shared<HuffmanEncodingImplementation>(domain_size);
 }
 
@@ -57,8 +55,6 @@ std::unique_ptr<data::Node<std::pair<Datum, unsigned>>> encoding::huffman::build
 	nodes.sort(nodes_comparator);
 
 	while (nodes.size() != 1) {
-		//nodes.sort(nodes_comparator);
-
 		auto node1 = std::move(nodes.back());
 		nodes.pop_back();
 		auto node2 = std::move(nodes.back());
@@ -135,6 +131,5 @@ Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, cons
 void encoding::huffman::decode_bits(io::InputStream& input_stream, const data::Node<Datum>& root, io::OutputStream& output_stream) {
 	while (!input_stream.end_reached()) {
 		output_stream.write(encoding::huffman::decode_single_datum(input_stream, root));
-		//io::write_bits(encoding::huffman::decode_single_datum(input_stream, root), bits_needed(_domain_size), output_stream);
 	}
 }
