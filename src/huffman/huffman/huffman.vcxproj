@@ -232,6 +232,7 @@
     <ClCompile Include="tests\eof-encoding-tests.cpp" />
     <ClCompile Include="tests\example-tests.cpp" />
     <ClCompile Include="tests\frequency-table-tests.cpp" />
+    <ClCompile Include="tests\huffman-encoding-tests.cpp" />
     <ClCompile Include="tests\tests.cpp" />
     <ClCompile Include="tests\tree-encoding-tests.cpp" />
     <ClCompile Include="tests\type-selection-tests.cpp" />

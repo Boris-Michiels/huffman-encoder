@@ -3,8 +3,6 @@
 #include "catch.hpp"
 #include "data/frequency-table.h"
 
-#include <iostream>
-
 
 TEST_CASE("FrequencyTable tests") {
     // Create new frequency table to count chars

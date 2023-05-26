@@ -55,9 +55,9 @@ std::unique_ptr<data::Node<std::pair<Datum, unsigned>>> encoding::huffman::build
 	nodes.sort(nodes_comparator);
 
 	while (nodes.size() != 1) {
-		auto node1 = std::move(nodes.back());
-		nodes.pop_back();
 		auto node2 = std::move(nodes.back());
+		nodes.pop_back();
+		auto node1 = std::move(nodes.back());
 		nodes.pop_back();
 
 		auto branch = std::make_unique<data::Branch<std::pair<Datum, unsigned>>>(std::move(node1), std::move(node2));
