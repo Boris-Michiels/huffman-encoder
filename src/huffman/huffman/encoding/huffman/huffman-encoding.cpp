@@ -11,10 +11,10 @@ namespace {
 		void encode(io::InputStream& input_stream, io::OutputStream& output_stream) const override {
 			auto data = encoding::huffman::copy_to_vector(input_stream);
 			auto freq_table = data::count_frequencies(data);
-			const auto weighted_root = encoding::huffman::build_tree(freq_table);
-			const auto root = data::map<std::pair<Datum, unsigned>, Datum>(*weighted_root, [](std::pair<Datum, unsigned> pair) { return pair.first; });
-			const auto codes = encoding::huffman::build_codes(*root);
-			encoding::huffman::encode_tree(*root, bits_needed(_domain_size), output_stream);
+			const auto weighted_tree = encoding::huffman::build_tree(freq_table);
+			const auto tree = data::map<std::pair<Datum, unsigned>, Datum>(*weighted_tree, [](std::pair<Datum, unsigned> pair) { return pair.first; });
+			const auto codes = encoding::huffman::build_codes(*tree);
+			encoding::huffman::encode_tree(*tree, bits_needed(_domain_size), output_stream);
 			
 			for (auto datum : data) {
 				auto& bits = codes->at(datum);
@@ -26,8 +26,8 @@ namespace {
 		}
 
 		void decode(io::InputStream& input_stream, io::OutputStream& output_stream) const override {
-			auto root = encoding::huffman::decode_tree(bits_needed(_domain_size), input_stream);
-			encoding::huffman::decode_bits(input_stream, *root, output_stream);
+			auto tree = encoding::huffman::decode_tree(bits_needed(_domain_size), input_stream);
+			encoding::huffman::decode_bits(input_stream, *tree, output_stream);
 		}
 	};
 }
@@ -63,7 +63,7 @@ std::unique_ptr<data::Node<std::pair<Datum, unsigned>>> encoding::huffman::build
 		auto branch = std::make_unique<data::Branch<std::pair<Datum, unsigned>>>(std::move(node1), std::move(node2));
 
 		unsigned weight = encoding::huffman::weight(*branch);
-		auto insert_location = std::find_if(nodes.begin(), nodes.end(), [weight](auto& c) { return encoding::huffman::weight(*c) < weight; });
+		auto insert_location = std::find_if(nodes.begin(), nodes.end(), [weight](auto& c) { return encoding::huffman::weight(*c) <= weight; });
 		nodes.insert(insert_location, std::move(branch));
 	}
 
@@ -85,9 +85,9 @@ unsigned encoding::huffman::weight(const data::Node<std::pair<Datum, unsigned>>&
 	return weight;
 }
 
-std::unique_ptr < std::map<Datum, std::vector<Datum>>> encoding::huffman::build_codes(const data::Node<Datum>& root) {
+std::unique_ptr<std::map<Datum, std::vector<Datum>>> encoding::huffman::build_codes(const data::Node<Datum>& tree) {
 	std::unique_ptr<std::map<Datum, std::vector<Datum>>> codes = std::make_unique<std::map<Datum, std::vector<Datum>>>();
-	encoding::huffman::build_codes(*codes, root, std::vector<Datum>());
+	encoding::huffman::build_codes(*codes, tree, std::vector<Datum>());
 	return std::move(codes);
 }
 
@@ -106,15 +106,15 @@ void encoding::huffman::build_codes(std::map<Datum, std::vector<Datum>>& codes, 
 	}
 }
 
-Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, const data::Node<Datum>& root) {
-	const data::Node<Datum>* node_ptr = &root;
+Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, const data::Node<Datum>& tree) {
+	const data::Node<Datum>* node_ptr = &tree;
 
 	while (true) {
 		if (input_stream.end_reached()) return 0;
 
 		auto current_node = dynamic_cast<const data::Branch<Datum>*>(node_ptr);
 
-		if (io::read_bits(1, input_stream) == 0) {
+		if (input_stream.read() == 0) {
 			node_ptr = &(current_node->left_child());
 		}
 		else {
@@ -128,8 +128,8 @@ Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, cons
 	}
 }
 
-void encoding::huffman::decode_bits(io::InputStream& input_stream, const data::Node<Datum>& root, io::OutputStream& output_stream) {
+void encoding::huffman::decode_bits(io::InputStream& input_stream, const data::Node<Datum>& tree, io::OutputStream& output_stream) {
 	while (!input_stream.end_reached()) {
-		output_stream.write(encoding::huffman::decode_single_datum(input_stream, root));
+		output_stream.write(encoding::huffman::decode_single_datum(input_stream, tree));
 	}
 }

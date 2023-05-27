@@ -30,7 +30,7 @@ namespace data {
 			return frequencies;
 		}
 
-		const unsigned operator [](const T& x) {
+		const unsigned operator const [](const T& x) {
 			return (frequencies.find(x) != frequencies.end()) ? frequencies[x] : 0;
 		}
 	};

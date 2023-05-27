@@ -36,21 +36,21 @@ TEST_CASE("building tree test 3") {
     REQUIRE(encoding::huffman::weight(tree_root) == 7);
 
     auto branch1 = dynamic_cast<const data::Branch<std::pair<Datum, unsigned int>>*>(&(tree_root).right_child());
-    assert(&branch1 != nullptr);
+    REQUIRE(&branch1 != nullptr);
     REQUIRE(encoding::huffman::weight(*branch1) == 3);
 
     auto L1 = dynamic_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(tree_root).left_child());
-    assert(&L1 != nullptr);
+    REQUIRE(&L1 != nullptr);
     REQUIRE(L1->value().first == 65);
     REQUIRE(L1->value().second == 4);
 
     auto L2 = dynamic_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(branch1->right_child()));
-    assert(&L2 != nullptr);
+    REQUIRE(&L2 != nullptr);
     REQUIRE(L2->value().first == 67);
     REQUIRE(L2->value().second == 1);
 
     auto L3 = dynamic_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(branch1->left_child()));
-    assert(&L3 != nullptr);
+    REQUIRE(&L3 != nullptr);
     REQUIRE(L3->value().first == 66);
     REQUIRE(L3->value().second == 2);
 }

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <functional>
+#include <assert.h>
 
 
 namespace data {
@@ -20,7 +21,10 @@ namespace data {
 
 	public:
 		Branch(std::unique_ptr<const Node<T>> left_child, std::unique_ptr<const Node<T>> right_child)
-			: _left_child(std::move(left_child)), _right_child(std::move(right_child)) {}
+			: _left_child(std::move(left_child)), _right_child(std::move(right_child)) {
+			assert(_left_child != nullptr);
+			assert(_right_child != nullptr);
+		}
 
 		const Node<T>& left_child() const { return *_left_child; }
 		const Node<T>& right_child() const { return *_right_child; }
@@ -28,7 +32,7 @@ namespace data {
 
 	template<typename T>
 	class Leaf : public Node<T> {
-		T _value;
+		const T _value;
 
 	public:
 		Leaf(const T& value) : _value(value) {}
