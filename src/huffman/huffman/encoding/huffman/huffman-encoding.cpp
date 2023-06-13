@@ -1,4 +1,10 @@
 #include "encoding/huffman/huffman-encoding.h"
+#include "encoding/huffman/tree-encoding.h"
+#include "io/binary-io.h"
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
 
 
 namespace {
@@ -13,7 +19,7 @@ namespace {
 			auto freq_table = data::count_frequencies(data);
 			const auto weighted_tree = encoding::huffman::build_tree(freq_table);
 			const auto tree = data::map<std::pair<Datum, unsigned>, Datum>(*weighted_tree, [](std::pair<Datum, unsigned> pair) { return pair.first; });
-			const auto codes = encoding::huffman::build_codes(*tree);
+			const auto codes = encoding::huffman::build_codes(*tree, _domain_size);
 			encoding::huffman::encode_tree(*tree, bits_needed(_domain_size), output_stream);
 			
 			for (auto datum : data) {
@@ -43,7 +49,8 @@ std::vector<Datum> encoding::huffman::copy_to_vector(io::InputStream& input_stre
 }
 
 std::unique_ptr<data::Node<std::pair<Datum, unsigned>>> encoding::huffman::build_tree(const data::FrequencyTable<Datum>& freq_table) {
-	std::list<std::unique_ptr<data::Node<std::pair<Datum, unsigned>>>> nodes;
+	std::vector<std::unique_ptr<data::Node<std::pair<Datum, unsigned>>>> nodes;
+	nodes.reserve(freq_table.frequency_map().size());
 
 	for (auto& pair : freq_table.frequency_map()) {
 		nodes.push_back(std::make_unique<data::Leaf<std::pair<Datum, unsigned>>>(pair));
@@ -52,7 +59,7 @@ std::unique_ptr<data::Node<std::pair<Datum, unsigned>>> encoding::huffman::build
 	auto nodes_comparator = [](const std::unique_ptr<data::Node<std::pair<Datum, unsigned>>>& a, const std::unique_ptr<data::Node<std::pair<Datum, unsigned>>>& b) {
 		return encoding::huffman::weight(*a) > encoding::huffman::weight(*b);
 	};
-	nodes.sort(nodes_comparator);
+	std::sort(nodes.begin(), nodes.end(), nodes_comparator);
 
 	while (nodes.size() != 1) {
 		auto node2 = std::move(nodes.back());
@@ -85,13 +92,13 @@ unsigned encoding::huffman::weight(const data::Node<std::pair<Datum, unsigned>>&
 	return weight;
 }
 
-std::unique_ptr<std::map<Datum, std::vector<Datum>>> encoding::huffman::build_codes(const data::Node<Datum>& tree) {
-	std::unique_ptr<std::map<Datum, std::vector<Datum>>> codes = std::make_unique<std::map<Datum, std::vector<Datum>>>();
+std::unique_ptr<std::vector<std::vector<Datum>>> encoding::huffman::build_codes(const data::Node<Datum>& tree, u64 domain_size) {
+	std::unique_ptr<std::vector<std::vector<Datum>>> codes = std::make_unique<std::vector<std::vector<Datum>>>(domain_size);
 	encoding::huffman::build_codes(*codes, tree, std::vector<Datum>());
 	return std::move(codes);
 }
 
-void encoding::huffman::build_codes(std::map<Datum, std::vector<Datum>>& codes, const data::Node<Datum>& node, std::vector<Datum> code) {
+void encoding::huffman::build_codes(std::vector<std::vector<Datum>>& codes, const data::Node<Datum>& node, std::vector<Datum> code) {
 	if (node.is_leaf()) {
 		auto& leaf = dynamic_cast<const data::Leaf<Datum>&>(node);
 		codes[leaf.value()] = code;

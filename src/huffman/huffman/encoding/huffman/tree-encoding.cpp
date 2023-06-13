@@ -1,4 +1,5 @@
 #include "encoding/huffman/tree-encoding.h"
+#include "io/binary-io.h"
 
 
 void encoding::huffman::encode_tree(const data::Node<Datum>& root, const unsigned nbits, io::OutputStream& output_stream) {
