@@ -15,7 +15,10 @@ namespace io {
     struct OutputStream {
         virtual ~OutputStream() { }
 
-        virtual void write(Datum value) = 0; // Waarom schrijft deze een hele uint64_t naar de output stream? Zo is elke "bit" toch 64 bits lang?
+        // Waarom schrijft deze een hele uint64_t naar de output stream? Zo is elke "bit" toch 64 bits lang?
+        // Achter de schermen wordt deze Datum gecast naar een integer type met 8, 16, 32 of 64 bits afhankelijk van de domain size.
+        // Zie memory-buffer.h.
+        virtual void write(Datum value) = 0;
     };
 }
 

@@ -9,7 +9,8 @@
 
 TEST_CASE("Bit Grouper tests") {
     io::MemoryBuffer<2> buffer2;
-    // Waarom is worden de Data geinterpreteerd als letters als de group_size groter is dan 4?
+    // Waarom worden de Data geinterpreteerd als letters als de group_size groter is dan 4?
+    // Omdat de achterliggende integer size dan 8 bit is. En dus als ascii wordt geinterpreteerd denk ik.
     io::MemoryBuffer<16> buffer16;
 
     buffer2.data()->push_back(1);

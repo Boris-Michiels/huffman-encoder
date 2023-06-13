@@ -4,12 +4,12 @@
 
 void encoding::huffman::encode_tree(const data::Node<Datum>& root, const unsigned nbits, io::OutputStream& output_stream) {
 	if (root.is_leaf()) {
-		const auto& leaf = dynamic_cast<const data::Leaf<Datum>&>(root);
+		const auto& leaf = static_cast<const data::Leaf<Datum>&>(root);
 		output_stream.write(0);
 		io::write_bits(leaf.value(), nbits, output_stream);
 	}
 	else {
-		const auto& branch = dynamic_cast<const data::Branch<Datum>&>(root);
+		const auto& branch = static_cast<const data::Branch<Datum>&>(root);
 		output_stream.write(1);
 		encode_tree(branch.left_child(), nbits, output_stream);
 		encode_tree(branch.right_child(), nbits, output_stream);

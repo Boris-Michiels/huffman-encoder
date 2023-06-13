@@ -44,11 +44,11 @@ namespace data {
 	template<typename IN, typename OUT>
 	std::unique_ptr<Node<OUT>> map(const Node<IN>& root, std::function<OUT(const IN&)> function) {
 		if (root.is_leaf()) {
-			const auto& leaf = dynamic_cast<const Leaf<IN>&>(root);
+			const auto& leaf = static_cast<const Leaf<IN>&>(root);
 			return std::make_unique<Leaf<OUT>>(function(leaf.value()));
 		}
 		else {
-			const auto& branch = dynamic_cast<const Branch<IN>&>(root);
+			const auto& branch = static_cast<const Branch<IN>&>(root);
 			std::unique_ptr<Node<OUT>> new_left_child = map(branch.left_child(), function);
 			std::unique_ptr<Node<OUT>> new_right_child = map(branch.right_child(), function);
 			return std::make_unique<Branch<OUT>>(std::move(new_left_child), std::move(new_right_child));

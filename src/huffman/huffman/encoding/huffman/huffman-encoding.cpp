@@ -81,11 +81,11 @@ unsigned encoding::huffman::weight(const data::Node<std::pair<Datum, unsigned>>&
 	unsigned weight;
 
 	if (node.is_leaf()) {
-		const auto& leaf = dynamic_cast<const data::Leaf<std::pair<Datum, unsigned>>&>(node);
+		const auto& leaf = static_cast<const data::Leaf<std::pair<Datum, unsigned>>&>(node);
 		weight = leaf.value().second;
 	}
 	else {
-		const auto& branch = dynamic_cast<const data::Branch<std::pair<Datum, unsigned>>&>(node);
+		const auto& branch = static_cast<const data::Branch<std::pair<Datum, unsigned>>&>(node);
 		weight = encoding::huffman::weight(branch.left_child()) + encoding::huffman::weight(branch.right_child());
 	}
 
@@ -100,11 +100,11 @@ std::unique_ptr<std::vector<std::vector<Datum>>> encoding::huffman::build_codes(
 
 void encoding::huffman::build_codes(std::vector<std::vector<Datum>>& codes, const data::Node<Datum>& node, std::vector<Datum> code) {
 	if (node.is_leaf()) {
-		auto& leaf = dynamic_cast<const data::Leaf<Datum>&>(node);
+		auto& leaf = static_cast<const data::Leaf<Datum>&>(node);
 		codes[leaf.value()] = code;
 	}
 	else {
-		auto& branch = dynamic_cast<const data::Branch<Datum>&>(node);
+		auto& branch = static_cast<const data::Branch<Datum>&>(node);
 		code.push_back(0);
 		encoding::huffman::build_codes(codes, branch.left_child(), code);
 
@@ -119,7 +119,7 @@ Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, cons
 	while (true) {
 		if (input_stream.end_reached()) return 0;
 
-		auto current_node = dynamic_cast<const data::Branch<Datum>*>(node_ptr);
+		auto current_node = static_cast<const data::Branch<Datum>*>(node_ptr);
 
 		if (input_stream.read() == 0) {
 			node_ptr = &(current_node->left_child());
@@ -129,7 +129,7 @@ Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, cons
 		}
 
 		if (node_ptr->is_leaf()) {
-			auto leaf = dynamic_cast<const data::Leaf<Datum>*>(node_ptr);
+			auto leaf = static_cast<const data::Leaf<Datum>*>(node_ptr);
 			return leaf->value();
 		}
 	}

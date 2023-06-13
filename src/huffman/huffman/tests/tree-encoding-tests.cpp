@@ -20,9 +20,9 @@ TEST_CASE("Tree Encoding tests") {
     auto buffer2 = io::MemoryBuffer<2>();
     encoding::huffman::encode_tree(root, 2, *(buffer2.destination()->create_output_stream()));
     auto root2 = encoding::huffman::decode_tree(2, *(buffer2.source()->create_input_stream()));
-    const data::Branch<Datum>* decoded = dynamic_cast<const data::Branch<Datum>*>(root2.get());
+    const data::Branch<Datum>* decoded = static_cast<const data::Branch<Datum>*>(root2.get());
     REQUIRE(!decoded->is_leaf());
-    auto leaf_12 = dynamic_cast<const data::Leaf<Datum>*>(&decoded->left_child());
+    auto leaf_12 = static_cast<const data::Leaf<Datum>*>(&decoded->left_child());
     REQUIRE(leaf_12->value() == 1);
 }
 
@@ -32,24 +32,24 @@ TEST_CASE("building tree test 3") {
 
     auto tree = std::move(encoding::huffman::build_tree(*freq_table));
 
-    const data::Branch<std::pair<Datum, unsigned int>>& tree_root = dynamic_cast<const data::Branch<std::pair<Datum, unsigned int>>&>(*(tree.get()));
+    const data::Branch<std::pair<Datum, unsigned int>>& tree_root = static_cast<const data::Branch<std::pair<Datum, unsigned int>>&>(*(tree.get()));
     REQUIRE(encoding::huffman::weight(tree_root) == 7);
 
-    auto branch1 = dynamic_cast<const data::Branch<std::pair<Datum, unsigned int>>*>(&(tree_root).right_child());
+    auto branch1 = static_cast<const data::Branch<std::pair<Datum, unsigned int>>*>(&(tree_root).right_child());
     REQUIRE(&branch1 != nullptr);
     REQUIRE(encoding::huffman::weight(*branch1) == 3);
 
-    auto L1 = dynamic_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(tree_root).left_child());
+    auto L1 = static_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(tree_root).left_child());
     REQUIRE(&L1 != nullptr);
     REQUIRE(L1->value().first == 65);
     REQUIRE(L1->value().second == 4);
 
-    auto L2 = dynamic_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(branch1->right_child()));
+    auto L2 = static_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(branch1->right_child()));
     REQUIRE(&L2 != nullptr);
     REQUIRE(L2->value().first == 67);
     REQUIRE(L2->value().second == 1);
 
-    auto L3 = dynamic_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(branch1->left_child()));
+    auto L3 = static_cast<const data::Leaf<std::pair<Datum, unsigned int>>*>(&(branch1->left_child()));
     REQUIRE(&L3 != nullptr);
     REQUIRE(L3->value().first == 66);
     REQUIRE(L3->value().second == 2);
