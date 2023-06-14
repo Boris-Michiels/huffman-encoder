@@ -95,7 +95,7 @@ unsigned encoding::huffman::weight(const data::Node<std::pair<Datum, unsigned>>&
 std::unique_ptr<std::vector<std::vector<Datum>>> encoding::huffman::build_codes(const data::Node<Datum>& tree, u64 domain_size) {
 	std::unique_ptr<std::vector<std::vector<Datum>>> codes = std::make_unique<std::vector<std::vector<Datum>>>(domain_size);
 	encoding::huffman::build_codes(*codes, tree, std::vector<Datum>());
-	return std::move(codes);
+	return codes;
 }
 
 void encoding::huffman::build_codes(std::vector<std::vector<Datum>>& codes, const data::Node<Datum>& node, std::vector<Datum> code) {
