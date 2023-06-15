@@ -116,9 +116,7 @@ void encoding::huffman::build_codes(std::vector<std::vector<Datum>>& codes, cons
 Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, const data::Node<Datum>& tree) {
 	const data::Node<Datum>* node_ptr = &tree;
 
-	while (true) {
-		if (input_stream.end_reached()) return 0;
-
+	while (!input_stream.end_reached()) {
 		auto current_node = static_cast<const data::Branch<Datum>*>(node_ptr);
 
 		if (input_stream.read() == 0) {
@@ -133,6 +131,8 @@ Datum encoding::huffman::decode_single_datum(io::InputStream& input_stream, cons
 			return leaf->value();
 		}
 	}
+
+	return 0;
 }
 
 void encoding::huffman::decode_bits(io::InputStream& input_stream, const data::Node<Datum>& tree, io::OutputStream& output_stream) {
