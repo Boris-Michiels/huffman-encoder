@@ -57,7 +57,11 @@ std::unique_ptr<data::Node<std::pair<Datum, unsigned>>> encoding::huffman::build
 	}
 
 	auto nodes_comparator = [](const std::unique_ptr<data::Node<std::pair<Datum, unsigned>>>& a, const std::unique_ptr<data::Node<std::pair<Datum, unsigned>>>& b) {
-		return encoding::huffman::weight(*a) > encoding::huffman::weight(*b);
+		unsigned a_weight = encoding::huffman::weight(*a);
+		unsigned b_weight = encoding::huffman::weight(*b);
+
+		if (a_weight - b_weight == 0) return (static_cast<data::Leaf<std::pair<Datum, unsigned>>*>(&*a))->value().first < (static_cast<data::Leaf<std::pair<Datum, unsigned>>*>(&*b))->value().first;
+		return a_weight > b_weight;
 	};
 	std::sort(nodes.begin(), nodes.end(), nodes_comparator);
 
